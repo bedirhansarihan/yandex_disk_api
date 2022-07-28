@@ -23,4 +23,4 @@ if __name__ == '__main__':
     yandex = YandexClient("public_key", "secret_key")
 
 
-    yandex.download_file_from_yandex(path="disk:/rosaliine/3.jpg")
+    yandex.download_file_from_yandex(path="disk:/test.jpg")
