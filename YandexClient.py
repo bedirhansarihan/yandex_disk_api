@@ -1,6 +1,7 @@
 import requests
 import typing
 import logging
+
 logger = logging.getLogger()
 
 class YandexClient():
