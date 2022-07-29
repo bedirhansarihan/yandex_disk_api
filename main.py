@@ -1,7 +1,7 @@
 import logging
 from YandexClient import YandexClient
 import credentials
-
+import pprint
 logger = logging.getLogger()
 
 logger.setLevel(logging.INFO)
@@ -24,4 +24,3 @@ if __name__ == '__main__':
     yandex = YandexClient(credentials.public_key, credentials.secret_key)
 
 
-    yandex.download_file_from_yandex(path="disk:/test.jpg")
