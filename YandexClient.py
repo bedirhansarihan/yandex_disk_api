@@ -3,23 +3,26 @@ import time
 import requests
 import typing
 import logging
-
+import json
 logger = logging.getLogger()
 
 
 class YandexClient():
 
-    def __init__(self, public_key, secret_key):
+    def __init__(self, client_id, client_secret, token):
 
         self._base_url = "https://cloud-api.yandex.net"
 
-        self._public_key = public_key
-        self._secret_key = secret_key
+        self._client_id = client_id
+        self._client_secret = client_secret
+        self._token = token
 
-        self.authentication = ""
-        self._headers = {'Authorization': 'OAuth {}'.format(self.authentication)}
+        self._headers = {'Authorization': 'OAuth {}'.format(self._token)}
 
-    def _make_request(self, method: str, endpoint: str, data: typing.Dict, absolute_url= False):
+
+        logger.info("Yandex Client has been created successfuly")
+
+    def _make_request(self, method: str, endpoint: str, data: typing.Dict, absolute_url= False, json = True):
 
         if method == "GET":
             try:
@@ -70,20 +73,32 @@ class YandexClient():
 
 
         if r.status_code == 200:  # OK, 200 is the response code of successful requests
-            return r.json()
+
+            if json:
+                return r.json()
+            else:
+                return r
 
         elif r.status_code == 201:  # Created,  The request succeeded, and a new resource was created as a result.
-            return r.json()
+            if json:
+                return r.json()
+            else:
+                return r
 
         elif r.status_code == 202:  # Accepted,
-            return r.json()
+            if json:
+                return r.json()
+            else:
+                return r
 
         else:
-            logger.error("Error while making %s request to %s: %s (error code %s)", method, endpoint, r.json(), r.status_code)
-            return None
-
-    def get_authentication(self):
-        pass
+            if json:
+                logger.error("Error while making %s request to %s: %s (error code %s)", method, endpoint, r.json(), r.status_code)
+                return None
+            else:
+                logger.error("Error while making %s request to %s: %s (error code %s)", method, endpoint, r,
+                             r.status_code)
+                return None
 
     def get_disk_information(self):
         """
@@ -231,6 +246,7 @@ class YandexClient():
         return create_response
 
     def publish(self, path):
+
         data ={
 
             "path": path
@@ -242,6 +258,7 @@ class YandexClient():
 
 
     def unpublish(self, path):
+
         data ={
 
             "path": path
@@ -284,15 +301,7 @@ class YandexClient():
         published_resources = self._make_request("GET", "/v1/disk/resources/public", data)
 
         return published_resources
-
-
-
-
-
-
-
-
-
+    
 
     def waiting_for_successful_status(self, url, data):
 

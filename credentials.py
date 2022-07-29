@@ -1,3 +1,4 @@
 
-public_key = ""
-secret_key = ""
+client_id = ""
+client_secret = ""
+token = ""
