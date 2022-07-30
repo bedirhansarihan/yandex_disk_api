@@ -36,5 +36,5 @@ if __name__ == '__main__':
 
     yandex = YandexClient(client_id, client_secret, token)
 
-    #yandex.mkdir("disk:/rosalineeeee")
+    #yandex.mkdir("disk:/test")
  atio
